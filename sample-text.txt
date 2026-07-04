@@ -1,0 +1,7 @@
+2026-07-03T13:00:00Z [INFO] api-gateway: Received request POST /api/v1/checkout
+2026-07-03T13:00:02Z [INFO] inventory-service: Checking stock for item_id=89211
+2026-07-03T13:00:05Z [SUCCESS] inventory-service: Item stock confirmed (qty available: 12)
+2026-07-03T13:00:10Z [INFO] order-service: Creating pending order instance
+2026-07-03T13:00:12Z [WARNING] shipping-service: Address lookup API returned slow response (980ms)
+2026-07-03T13:00:15Z [ERROR] payment-service: Credit card transaction failed - EXPIRED_CARD
+2026-07-03T13:00:20Z [INFO] order-service: Updating order status to FAILED
