@@ -118,21 +118,24 @@ function App() {
       setProfileAccountType(user.accountType || 'Developer');
     }
   }, [user, token]);
-
+const API_URL = import.meta.env.VITE_API_URL || "";
 const authFetch = async (url, options = {}) => {
   const headers = options.headers || {};
   const storedToken = token || localStorage.getItem('token');
   if (storedToken) {
     headers['Authorization'] = `Bearer ${storedToken}`;
   }
-  return fetch(url, { ...options, headers });
+return fetch(`${API_URL}${url}`, {
+  ...options,
+  headers,
+});
 };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     try {
-const res = await fetch('/api/auth/login', {
+const res = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: authEmail, password: authPassword })
@@ -157,7 +160,7 @@ const res = await fetch('/api/auth/login', {
     e.preventDefault();
     setErrorMsg('');
     try {
-const res = await fetch('/api/auth/signup', {
+const res = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: authName, email: authEmail, password: authPassword })
@@ -184,7 +187,7 @@ const res = await fetch('/api/auth/signup', {
     setErrorMsg('');
     setForgotSuccess('');
     try {
-      const res = await fetch('/api/auth/forgot-password', {
+      const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail, newPassword: forgotNewPassword })
