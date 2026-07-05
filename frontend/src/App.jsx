@@ -135,7 +135,7 @@ return fetch(`${API_URL}${url}`, {
     e.preventDefault();
     setErrorMsg('');
     try {
-const res = await fetch(`${API_URL}/api/auth/login`, {
+const res = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: authEmail, password: authPassword })
@@ -160,7 +160,7 @@ const res = await fetch(`${API_URL}/api/auth/login`, {
     e.preventDefault();
     setErrorMsg('');
     try {
-const res = await fetch(`${API_URL}/api/auth/signup`, {
+const res = await fetch(`${API_URL}/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: authName, email: authEmail, password: authPassword })
@@ -187,7 +187,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
     setErrorMsg('');
     setForgotSuccess('');
     try {
-      const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
+      const res = await fetch(`${API_URL}/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail, newPassword: forgotNewPassword })
@@ -217,7 +217,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     try {
-      const res = await authFetch('/api/auth/profile', {
+      const res = await authFetch('/auth/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: profileName, accountType: profileAccountType })
@@ -237,7 +237,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
 
   const fetchUploadHistory = async () => {
     try {
-      const res = await authFetch('/api/history');
+      const res = await authFetch('/history');
       const json = await res.json();
       if (Array.isArray(json)) {
         setUploadHistory(json);
@@ -251,7 +251,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
     try {
       setUploading(true);
       setErrorMsg('');
-      const res = await authFetch(`/api/dashboard?id=${id}`);
+      const res = await authFetch(`/dashboard?id=${id}`);
       const json = await res.json();
       if (json.stats) {
         setData(json);
@@ -283,7 +283,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
     e.stopPropagation();
     if (!confirm('Are you sure you want to remove this log from history?')) return;
     try {
-      const res = await authFetch(`/api/analysis/${id}`, { method: 'DELETE' });
+      const res = await authFetch(`/analysis/${id}`, { method: 'DELETE' });
       if (res.ok) {
         const remaining = uploadHistory.filter(item => item.id !== id);
         setUploadHistory(remaining);
@@ -305,7 +305,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
   const renameHistoryItem = async (e, id) => {
     e.stopPropagation();
     try {
-      const res = await authFetch(`/api/analysis/${id}/rename`, {
+      const res = await authFetch(`/analysis/${id}/rename`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filename: renameVal })
@@ -327,7 +327,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
     e.stopPropagation();
     try {
       setAnalyzing(true);
-      const res = await authFetch('/api/analyze-log', {
+      const res = await authFetch('/analyze-log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })
@@ -352,7 +352,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
     try {
       setDashboardLoading(true);
       const preservedId = localStorage.getItem('selectedLogId');
-      const url = preservedId ? `/api/dashboard?id=${preservedId}` : '/api/dashboard';
+      const url = preservedId ? `/dashboard?id=${preservedId}` : '/dashboard';
       const res = await authFetch(url);
       const json = await res.json();
       if (json.stats) {
@@ -401,7 +401,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
 
     try {
       // 1. Upload File
-      const uploadRes = await authFetch('/api/upload-log', {
+      const uploadRes = await authFetch('/upload-log', {
         method: 'POST',
         body: formData
       });
@@ -416,7 +416,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
       setAnalyzing(true);
 
       // 2. Trigger AI Analysis
-      const analyzeRes = await authFetch('/api/analyze-log', {
+      const analyzeRes = await authFetch('/analyze-log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: logId })
@@ -463,7 +463,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
     setChatMessages([]);
 
     try {
-      const res = await authFetch('/api/upload-raw-text', {
+      const res = await authFetch('/upload-raw-text', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rawText: pastedLogs })
@@ -507,7 +507,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
         contextMessage = `User question: ${userText}\n\nInstruction: Act as a natural conversational AI assistant (like ChatGPT/Claude). Answer ONLY the user's current question directly in 100-200 words. Do not repeat previous summaries, do not generate reports, do not use markdown headings, bold text, or lists. Respond in plain, simple English.`;
       }
 
-      const res = await authFetch('/api/chat', {
+      const res = await authFetch('/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -537,7 +537,7 @@ const res = await fetch(`${API_URL}/api/auth/signup`, {
     setData(null);
     setChatMessages([]);
     try {
-      const res = await authFetch('/api/load-demo', {
+      const res = await authFetch('/load-demo', {
         method: 'POST'
       });
       const json = await res.json();
