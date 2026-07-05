@@ -119,27 +119,23 @@ function App() {
     }
   }, [user, token]);
 
-const API_URL = import.meta.env.VITE_API_URL || "";
-
-const authFetch = async (url, options = {}) => {
-  const headers = options.headers || {};
-  const storedToken = token || localStorage.getItem("token");
-
-  if (storedToken) {
-    headers["Authorization"] = `Bearer ${storedToken}`;
-  }
-
-  return fetch(`${API_URL}${url}`, {
-    ...options,
-    headers,
-  });
-};
+  const authFetch = async (url, options = {}) => {
+    const API_BASE = import.meta.env.VITE_API_URL || '';
+    const cleanUrl = (API_BASE && url.startsWith('/api/')) ? url.substring(4) : url;
+    const finalUrl = `${API_BASE}${cleanUrl}`;
+    const headers = options.headers || {};
+    const storedToken = token || localStorage.getItem('token');
+    if (storedToken) {
+      headers['Authorization'] = `Bearer ${storedToken}`;
+    }
+    return fetch(finalUrl, { ...options, headers });
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     try {
-    const res = await fetch(`${API_URL}/api/auth/login`, {
+      const res = await authFetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: authEmail, password: authPassword })
@@ -164,7 +160,7 @@ const authFetch = async (url, options = {}) => {
     e.preventDefault();
     setErrorMsg('');
     try {
-   const res = await fetch(`${API_URL}/api/auth/signup`, {
+      const res = await authFetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: authName, email: authEmail, password: authPassword })
@@ -191,7 +187,7 @@ const authFetch = async (url, options = {}) => {
     setErrorMsg('');
     setForgotSuccess('');
     try {
-      const res = await fetch(`${API_URL}/api/auth/forgot-password`, {
+      const res = await authFetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail, newPassword: forgotNewPassword })
