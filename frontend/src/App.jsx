@@ -119,23 +119,20 @@ function App() {
     }
   }, [user, token]);
 
-  const authFetch = async (url, options = {}) => {
-    const API_BASE = import.meta.env.VITE_API_URL || '';
-    const cleanUrl = (API_BASE && url.startsWith('/api/')) ? url.substring(4) : url;
-    const finalUrl = `${API_BASE}${cleanUrl}`;
-    const headers = options.headers || {};
-    const storedToken = token || localStorage.getItem('token');
-    if (storedToken) {
-      headers['Authorization'] = `Bearer ${storedToken}`;
-    }
-    return fetch(finalUrl, { ...options, headers });
-  };
+const authFetch = async (url, options = {}) => {
+  const headers = options.headers || {};
+  const storedToken = token || localStorage.getItem('token');
+  if (storedToken) {
+    headers['Authorization'] = `Bearer ${storedToken}`;
+  }
+  return fetch(url, { ...options, headers });
+};
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     try {
-      const res = await authFetch('/api/auth/login', {
+const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: authEmail, password: authPassword })
@@ -160,7 +157,7 @@ function App() {
     e.preventDefault();
     setErrorMsg('');
     try {
-      const res = await authFetch('/api/auth/signup', {
+const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: authName, email: authEmail, password: authPassword })
@@ -187,7 +184,7 @@ function App() {
     setErrorMsg('');
     setForgotSuccess('');
     try {
-      const res = await authFetch('/api/auth/forgot-password', {
+      const res = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: forgotEmail, newPassword: forgotNewPassword })
