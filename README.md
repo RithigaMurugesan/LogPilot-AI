@@ -23,7 +23,8 @@ MONGODB_URI=mongodb+srv://...           # (Optional) Falls back to local db.json
 GROQ_API_KEY=gsk_...                     # (Optional) Falls back to smart SRE mock diagnostics if blank
 NODE_ENV=development
 ```
-
+##Live Demo
+log-pilot-ai.vercel.app
 ---
 
 ## 🚀 How to Run Locally
